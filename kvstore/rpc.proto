@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package kvstore;
+
+service KeyValueService {
+  rpc Put (KVRequest) returns (KVResponse);
+  rpc Get (KVRequest) returns (KVResponse);
+  rpc Delete (KVRequest) returns (KVResponse);
+  rpc AppendEntries (AppendEntriesRequest) returns (AppendEntriesResponse);
+  rpc RequestVote (VoteRequest) returns (VoteResponse);
+}
+
+message KVRequest {
+  string key = 1;
+  string value = 2;
+}
+
+message KVResponse {
+  string status = 1;
+  string value = 2;
+}
+
+message AppendEntriesRequest {
+  int32 term = 1;
+  int32 leaderId = 2;
+  repeated KVRequest entries = 3;
+  int32 leaderCommit = 4;
+}
+
+message AppendEntriesResponse {
+  int32 term = 1;
+  bool success = 2;
+}
+
+message VoteRequest {
+  int32 term = 1;
+  int32 candidateId = 2;
+}
+
+message VoteResponse {
+  int32 term = 1;
+  bool voteGranted = 2;
+}
